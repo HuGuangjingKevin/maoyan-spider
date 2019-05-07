@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
-import scrapy
 import logging
-import re
 import os
+import re
+
 import requests
+import scrapy
 from fontTools.ttLib import TTFont
 
 # 猫眼电影的官网主页地址
