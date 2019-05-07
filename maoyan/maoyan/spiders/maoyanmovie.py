@@ -9,10 +9,10 @@ from fontTools.ttLib import TTFont
 # 猫眼电影的官网主页地址
 host = "https://maoyan.com"
 # 字体映射字典
-woffDict = {"uniE767": "2", "uniEEFD": "9", "uniE655": "4", "uniE18D": "3", "uniF620": "8", "uniE58F": "1",
-            "uniF441": "7", "uniF50A": "5", "uniE4C8": "6", "uniEBF6": "0"}
+woffDict = {'uniF5D4': '0', 'uniEC52': '8', 'uniE5A3': '9', 'uniEBAC': '2', 'uniEBA9': '6',
+            'uniE408': '3', 'uniF58C': '1', 'uniF73D': '4', 'uniF07B': '5', 'uniF727': '7'}
 # 从字体中正则出需要替换数字的文本
-regexFont = re.compile(r"&#x(.{4};)")
+regexFont = re.compile(r"&#x(.{4});")
 # 从电影详情页面正则出woff文件
 regexWoff = re.compile(r"url\(\'(.*?\.woff)\'\)")
 
@@ -35,10 +35,9 @@ class MaoyanmovieSpider(scrapy.Spider):
         logging.info("主页:{}下面有{}个电影".format(response.url, len(detailHrefList)))
         for href in detailHrefList:
             # 电影详情页的url
-            detailUrl = "https://maoyan.com/films/1228776"
+            detailUrl = host + href
             logging.info("开始请求主页:{}下面的电影详情页:{}".format(response.url, detailUrl))
             yield scrapy.Request(url=detailUrl, callback=self.parseMovieDetail)
-            break
 
     def parseMovieDetail(self, response):
         font = downLoadWoff(response)
@@ -74,7 +73,7 @@ def getFontNumber(font, text):
     # 从字体中提取出来的部分长度4的字符串列表
     textExtractList = regexFont.findall(text)
     for textExtract in textExtractList:
-        text = text.replace("&#x{}".format(textExtract), getNum(font, "uni{}".format(textExtract.upper())))
+        text = text.replace("&#x{};".format(textExtract), getNum(font, "uni{}".format(textExtract.upper())))
     return text
 
 
