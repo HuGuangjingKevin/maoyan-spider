@@ -9,6 +9,7 @@ from scrapy import signals
 import random
 from fake_useragent import UserAgent
 
+
 class MaoyanSpiderMiddleware(object):
     # Not all methods need to be defined. If a method is not defined,
     # scrapy acts as if the spider middleware does not modify the
@@ -116,5 +117,5 @@ class ProxyMiddleware(object):
 class UAMiddleware(object):
 
     def process_request(self, request, spider):
-        ua = UserAgent().random
+        ua = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.103 Safari/537.36"
         request.headers['User-Agent'] = ua
