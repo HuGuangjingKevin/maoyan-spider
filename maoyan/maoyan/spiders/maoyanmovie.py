@@ -25,7 +25,7 @@ class MaoyanmovieSpider(scrapy.Spider):
     allowed_domains = ['maoyan.com']
 
     def start_requests(self):
-        start_urls = ['https://maoyan.com/films?showType=3']
+        start_urls = ['https://maoyan.com/films?showType=3&yearId=13&offset={}'.format(i * 30) for i in range(117)]
         for url in start_urls:
             logging.info("开始请求主页地址:{}".format(url))
             yield scrapy.Request(url=url, callback=self.parse)
@@ -64,13 +64,15 @@ class MaoyanmovieSpider(scrapy.Spider):
             countryDuration = response.xpath('//div[@class="movie-brief-container"]/ul/li[2]/text()').extract_first()
             if "/" in countryDuration:
                 item["country"] = countryDuration.split("/")[0].strip()
-                item["duration"] = countryDuration.split("/")[0].strip()
+                item["duration"] = countryDuration.split("/")[1].strip()
             else:
                 item["country"] = countryDuration.strip()
                 item["duration"] = ""
             item["releaseTime"] = response.xpath(
                 '//div[@class="movie-brief-container"]/ul/li[3]/text()').extract_first()
-            logging.info(item)
+            item["_id"] = re.search(r"\d+", response.url).group()
+            item["url"] = response.url
+            yield item
         else:
             return
 
