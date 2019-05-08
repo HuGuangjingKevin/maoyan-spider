@@ -10,8 +10,8 @@ from fontTools.ttLib import TTFont
 # 猫眼电影的官网主页地址
 host = "https://maoyan.com"
 # 字体映射字典
-woffDict = {'uniF5D4': '0', 'uniEC52': '8', 'uniE5A3': '9', 'uniEBAC': '2', 'uniEBA9': '6',
-            'uniE408': '3', 'uniF58C': '1', 'uniF73D': '4', 'uniF07B': '5', 'uniF727': '7'}
+woffDict = {'uniEBF6': '0', 'uniF620': '8', 'uniEEFD': '9', 'uniE767': '2', 'uniE4C8': '6',
+            'uniE18D': '3', 'uniE58F': '1', 'uniE655': '4', 'uniF50A': '5', 'uniF441': '7'}
 # 从字体中正则出需要替换数字的文本
 regexFont = re.compile(r"&#x(.{4});")
 # 从电影详情页面正则出woff文件
