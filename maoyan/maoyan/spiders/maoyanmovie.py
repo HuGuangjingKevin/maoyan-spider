@@ -88,6 +88,7 @@ def downLoadWoff(response):
 
     # 使用python的FontTools库进行字体文件的处理
     font = TTFont(woffFileName)
+    os.remove(woffFileName)
     return font
 
 
