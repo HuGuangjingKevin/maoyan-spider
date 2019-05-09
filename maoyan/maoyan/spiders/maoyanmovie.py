@@ -25,7 +25,7 @@ class MaoyanmovieSpider(scrapy.Spider):
     allowed_domains = ['maoyan.com']
 
     def start_requests(self):
-        start_urls = ['https://maoyan.com/films?showType=3&yearId=13&offset={}'.format(i * 30) for i in range(117)]
+        start_urls = ["https://maoyan.com/films?showType=3"]
         for url in start_urls:
             logging.info("开始请求主页地址:{}".format(url))
             yield scrapy.Request(url=url, callback=self.parse)
@@ -39,6 +39,10 @@ class MaoyanmovieSpider(scrapy.Spider):
             detailUrl = host + href
             logging.info("开始请求主页下面的电影详情页:{}".format(detailUrl))
             yield scrapy.Request(url=detailUrl, callback=self.parseMovieDetail)
+        if response.xpath('//ul[@class="list-pager"]/li[last()]/a/text()').extract_first() == '下一页':
+            nextPageUrl = "https://maoyan.com/films" + response.xpath(
+                '//ul[@class="list-pager"]/li[last()]/a/@href').extract_first()
+            yield scrapy.Request(url=nextPageUrl, callback=self.parse)
 
     def parseMovieDetail(self, response):
         item = {}
@@ -74,6 +78,7 @@ class MaoyanmovieSpider(scrapy.Spider):
             item["url"] = response.url
             yield item
         else:
+            logging.error("缺少数据[{}]".format(response.url))
             return
 
 
