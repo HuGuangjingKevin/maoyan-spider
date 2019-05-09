@@ -45,6 +45,10 @@ class MaoyanmovieSpider(scrapy.Spider):
             yield scrapy.Request(url=nextPageUrl, callback=self.parse)
 
     def parseMovieDetail(self, response):
+        """
+        :param response: 
+        :return: 
+        """
         item = {}
         # 评分  票房节点
         movieStatsNode = response.xpath('//div[@class="movie-stats-container"]')[0]
@@ -83,6 +87,10 @@ class MaoyanmovieSpider(scrapy.Spider):
 
 
 def downLoadWoff(response):
+    """
+    :param response: 
+    :return: 
+    """
     # 正则提取woff文件
     woff = regexWoff.search(response.text).group(1)
     # 前面增加http:，得到woff链接地址
